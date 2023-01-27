@@ -1,0 +1,19 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import type { Post } from "../../types";
+
+const posts = await Astro.glob<Post>("../posts/*.md");
+const tags = [...new Set(posts.map((post) => post.frontmatter.tags).flat())];
+---
+
+<Layout title="Tags">
+  <div>
+    {
+      tags.map((tag) => (
+        <p class="tag">
+          <a href={`/tags/${tag}`}>{tag}</a>
+        </p>
+      ))
+    }
+  </div>
+</Layout>

@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/ContactForm";
+import CoolTitle from "../components/CoolTitle.svelte";
+---
+
+<Layout title="Contact us">
+  <ContactForm client:load>
+    <CoolTitle slot="title" text={"Contact form"} client:load />
+  </ContactForm>
+</Layout>

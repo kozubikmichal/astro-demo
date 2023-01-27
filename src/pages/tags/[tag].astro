@@ -1,0 +1,46 @@
+---
+import type { MarkdownInstance } from "astro";
+import BlogPost from "../../components/BlogPost.astro";
+import Layout from "../../layouts/Layout.astro";
+import type { Post } from "../../types";
+
+interface Props {
+  posts: MarkdownInstance<Post>[];
+}
+
+export async function getStaticPaths() {
+  const posts = await Astro.glob<Post>("../posts/*.md");
+  const props = { posts };
+
+  return [
+    { params: { tag: "astro" }, props },
+    { params: { tag: "successes" }, props },
+    { params: { tag: "community" }, props },
+    { params: { tag: "blogging" }, props },
+    { params: { tag: "setbacks" }, props },
+    { params: { tag: "learning in public" }, props },
+  ];
+}
+
+const tag = Astro.params?.tag || "";
+const { posts } = Astro.props;
+
+const filteredPosts = posts.filter((post) =>
+  post.frontmatter.tags.includes(tag)
+);
+---
+
+<Layout title={tag}>
+  <p>Posts tagged with {tag}</p>
+  <ul>
+    {
+      filteredPosts.map((post) => (
+        <BlogPost
+          url={post.url}
+          title={post.frontmatter.title}
+          description={post.frontmatter.description}
+        />
+      ))
+    }
+  </ul>
+</Layout>
